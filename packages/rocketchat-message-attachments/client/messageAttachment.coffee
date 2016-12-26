@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 Template.messageAttachment.helpers
 	fixCordova: (url) ->
 		if Meteor.isCordova and url?[0] is '/'
@@ -10,6 +12,8 @@ Template.messageAttachment.helpers
 
 		if Meteor.settings.public.sandstorm or url.match /^(https?:)?\/\//i
 			return url
+		else if navigator.userAgent.indexOf('Electron') > -1
+			return __meteor_runtime_config__.ROOT_URL_PATH_PREFIX + url
 		else
 			return Meteor.absoluteUrl().replace(/\/$/, '') + __meteor_runtime_config__.ROOT_URL_PATH_PREFIX + url
 

@@ -1,3 +1,6 @@
+import moment from 'moment'
+import 'moment-timezone'
+
 Importer.HipChat = class Importer.HipChat extends Importer.Base
 	@RoomPrefix = 'hipchat_export/rooms/'
 	@UsersPrefix = 'hipchat_export/users/'
@@ -132,8 +135,7 @@ Importer.HipChat = class Importer.HipChat extends Importer.Base
 								hipchat: "@#{user.mention_name}"
 								rocket: "@#{user.mention_name}"
 							Meteor.runAsUser userId, () =>
-								Meteor.call 'setUsername', user.mention_name
-								Meteor.call 'joinDefaultChannels', true
+								Meteor.call 'setUsername', user.mention_name, {joinDefaultChannelsSilenced: true}
 								Meteor.call 'setAvatarFromService', user.photo_url, undefined, 'url'
 								Meteor.call 'userSetUtcOffset', parseInt moment().tz(user.timezone).format('Z').toString().split(':')[0]
 
